@@ -2,6 +2,7 @@ package com.EcoMarket.producto.service;
 
 import com.EcoMarket.producto.model.Inventario;
 import com.EcoMarket.producto.repository.InventarioRepository;
+import com.EcoMarket.producto.repository.ProductoRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -19,6 +20,9 @@ public class InventarioService {
     @Autowired
     private InventarioRepository inventarioRepository;
 
+    @Autowired
+    private ProductoRepository productoRepository;
+
     public List<Inventario> listarTodos() {
         return inventarioRepository.findAll();
     }
@@ -28,6 +32,12 @@ public class InventarioService {
     }
 
     public Inventario guardar(Inventario inventario) {
+        if (inventario.getProducto() == null || inventario.getProducto().getId() == null) {
+            throw new IllegalArgumentException("Debe proporcionar un producto válido");
+        }
+        if (!productoRepository.existsById(inventario.getProducto().getId())) {
+            throw new RuntimeException("Producto no encontrado");
+        }
         inventario.setFechaActualizacion(LocalDateTime.now());
         inventario.actualizarEstado(); // lógica de estado
         return inventarioRepository.save(inventario);
@@ -35,6 +45,12 @@ public class InventarioService {
 
     public Optional<Inventario> actualizar(Long id, Inventario inventarioActualizado) {
         return inventarioRepository.findById(id).map(inventario -> {
+            if (inventarioActualizado.getProducto() == null || inventarioActualizado.getProducto().getId() == null) {
+                throw new IllegalArgumentException("Debe proporcionar un producto válido");
+            }
+            if (!productoRepository.existsById(inventarioActualizado.getProducto().getId())) {
+                throw new RuntimeException("Producto no encontrado");
+            }
             inventario.setProducto(inventarioActualizado.getProducto());
             inventario.setCantidad(inventarioActualizado.getCantidad());
             inventario.setCantidadMinima(inventarioActualizado.getCantidadMinima());

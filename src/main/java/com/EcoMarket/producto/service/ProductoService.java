@@ -42,6 +42,10 @@ public class ProductoService {
     }
 
     public Producto guardar(Producto producto) {
+        //verificación de codigo
+        if (productoRepository.findByCodigo(producto.getCodigo()).isPresent()) {
+            throw new RuntimeException("El código ya existe");
+    }
         return productoRepository.save(producto);
     }
 
@@ -53,7 +57,14 @@ public class ProductoService {
         return false;
     }
     public Optional<Producto> actualizar(Long id, Producto productoActualizado) {
+
     return productoRepository.findById(id).map(producto -> {
+        if (!producto.getCodigo().equals(productoActualizado.getCodigo())) {
+            if (productoRepository.findByCodigo(productoActualizado.getCodigo()).isPresent()) {
+                throw new RuntimeException("El código ya existe");
+            }
+            producto.setCodigo(productoActualizado.getCodigo());
+            }
         producto.setCodigo(productoActualizado.getCodigo());
         producto.setNombre(productoActualizado.getNombre());
         producto.setDescripcion(productoActualizado.getDescripcion());
