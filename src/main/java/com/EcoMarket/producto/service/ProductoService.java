@@ -10,6 +10,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @Service: Marca la clase como un componente de servicio de Spring
+ * @Transactional: Todas las operaciones del servicio se ejecutan en transacciones
+ */
+
 @Transactional
 @Service
 public class ProductoService {
@@ -59,6 +64,7 @@ public class ProductoService {
     public Optional<Producto> actualizar(Long id, Producto productoActualizado) {
 
     return productoRepository.findById(id).map(producto -> {
+        // Si se cambia el código, verificar que no esté duplicado
         if (!producto.getCodigo().equals(productoActualizado.getCodigo())) {
             if (productoRepository.findByCodigo(productoActualizado.getCodigo()).isPresent()) {
                 throw new RuntimeException("El código ya existe");

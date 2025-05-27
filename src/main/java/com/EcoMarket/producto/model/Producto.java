@@ -13,6 +13,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+
+/**
+ * @Entity: Marca la clase como una entidad JPA que se mapea a una tabla de BD
+ * @Table: Especifica el nombre de la tabla en la base de datos
+ * @Data: Lombok - Genera automáticamente getters, setters, toString, equals y hashCode
+ * @NoArgsConstructor: Lombok - Genera constructor sin parámetros (requerido por JPA)
+ * @AllArgsConstructor: Lombok - Genera constructor con todos los parámetros
+ */
+
 @Entity
 @Table(name = "Producto")
 @Data

@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @RestController: Combina @Controller + @ResponseBody (respuestas JSON automáticas)
+ * @RequestMapping: Prefijo común para todas las rutas (/api/v1/productos)
+ * @Tag: Documentación de Swagger - agrupa endpoints bajo "Productos"
+ */
+
 @RestController
 @RequestMapping("/api/v1/productos")
 @Tag(name = "Productos", description = "Operaciones relacionadas con productos")

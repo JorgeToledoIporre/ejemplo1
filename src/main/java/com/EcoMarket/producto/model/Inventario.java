@@ -26,6 +26,13 @@ public class Inventario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    /**
+     * Relación con la entidad Producto
+     * @ManyToOne: Muchos inventarios pueden tener el mismo producto
+     * @JoinColumn: Especifica la columna que hace la relación (clave foránea)
+     * nullable = false: Siempre debe estar asociado a un producto
+     */
+
     @ManyToOne
     @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
