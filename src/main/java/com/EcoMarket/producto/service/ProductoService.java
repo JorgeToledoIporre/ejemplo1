@@ -81,4 +81,7 @@ public class ProductoService {
         return productoRepository.save(producto);
     });
     }
+    public void setProductoRepository(ProductoRepository productoRepository){
+        this.productoRepository = productoRepository;
+    }
 }
