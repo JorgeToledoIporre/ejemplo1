@@ -1,4 +1,4 @@
-package com.EcoMarket.producto.controller;
+package com.EcoMarket.Project.controller;
 
 import com.EcoMarket.producto.model.Producto;
 import com.EcoMarket.producto.service.ProductoService;
@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/productos")
 @Tag(name = "Productos", description = "Operaciones relacionadas con productos")
-public class ProductoController {
+public class ProductoControllerTest {
 
     @Autowired
     private ProductoService productoService;

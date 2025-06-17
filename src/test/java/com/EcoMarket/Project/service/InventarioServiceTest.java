@@ -1,4 +1,4 @@
-package com.EcoMarket.producto.service;
+package com.EcoMarket.Project.service;
 
 import com.EcoMarket.producto.model.Inventario;
 import com.EcoMarket.producto.repository.InventarioRepository;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Transactional
 @Service
-public class InventarioService {
+public class InventarioServiceTest {
 
     @Autowired
     private InventarioRepository inventarioRepository;
