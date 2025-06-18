@@ -68,4 +68,10 @@ public class InventarioService {
         }
         return false;
     }
+    public void setInventarioRepository(InventarioRepository inventarioRepository) {
+    this.inventarioRepository = inventarioRepository;
+}
+    public void setProductoRepository(ProductoRepository productoRepository) {
+    this.productoRepository = productoRepository;
+}
 }

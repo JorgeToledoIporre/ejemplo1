@@ -127,4 +127,7 @@ public class ProductoController {
             return ResponseEntity.notFound().build();
         }
     }
+    public void setProductoService(ProductoService productoService) {
+    this.productoService = productoService;
+}
 }

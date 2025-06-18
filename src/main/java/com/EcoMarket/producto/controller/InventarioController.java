@@ -115,4 +115,8 @@ public class InventarioController {
             return ResponseEntity.notFound().build();
         }
     }
+    public void setInventarioService(InventarioService inventarioService) {
+    this.inventarioService = inventarioService;
+    }
+    
 }

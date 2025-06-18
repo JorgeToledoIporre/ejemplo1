@@ -1,130 +1,115 @@
 package com.EcoMarket.Project.controller;
 
+import com.EcoMarket.producto.controller.ProductoController;
 import com.EcoMarket.producto.model.Producto;
 import com.EcoMarket.producto.service.ProductoService;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
-/**
- * @RestController: Combina @Controller + @ResponseBody (respuestas JSON automáticas)
- * @RequestMapping: Prefijo común para todas las rutas (/api/v1/productos)
- * @Tag: Documentación de Swagger - agrupa endpoints bajo "Productos"
- */
-
-@RestController
-@RequestMapping("/api/v1/productos")
-@Tag(name = "Productos", description = "Operaciones relacionadas con productos")
 public class ProductoControllerTest {
 
-    @Autowired
+    @Mock
     private ProductoService productoService;
-    @Operation(
-        summary = "Listar todos los productos",
-        description = "Obtiene una lista de todos los productos disponibles"
-    )
-    @ApiResponse(
-        responseCode = "200",
-        description = "Lista de productos",
-        content = @Content(
-            mediaType = "application/json",
-            examples = @ExampleObject(value = """
-                [
-                  {
-                    "id": 1,
-                    "codigo": "P001",
-                    "nombre": "Producto de prueba",
-                    "descripcion": "Un producto para pruebas",
-                    "precio": 12.99,
-                    "categoria": "Alimentos",
-                    "activo": true
-                  }
-                ]
-            """)
-        )
-    )
-    @GetMapping
-    public ResponseEntity<List<Producto>> listarTodos() {
-        return ResponseEntity.ok(productoService.listarTodos());
+    private ProductoController productoController;
+    @BeforeEach
+
+    void setUp() {
+        productoService = mock(ProductoService.class);
+        productoController = new ProductoController();
+        productoController.setProductoService(productoService); // Debes agregar este setter en la clase real ProductoController
     }
-    @Operation(
-        summary = "Obtener producto por ID",
-        description = "Devuelve un producto específico si existe"
-    )
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Producto encontrado"),
-        @ApiResponse(responseCode = "404", description = "Producto no encontrado")
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<Producto> obtenerPorId(@PathVariable Long id) {
-        return productoService.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+
+    @Test
+    void testListar() {
+        Producto p1 = new Producto();
+        Producto p2 = new Producto();
+        when(productoService.listarTodos()).thenReturn(List.of(p1, p2));
+
+        ResponseEntity<List<Producto>> respuesta = productoController.listarTodos();
+        assertEquals(HttpStatus.OK, respuesta.getStatusCode());
+        assertEquals(2, respuesta.getBody().size());
     }
-    @Operation(
-        summary = "Crear un nuevo producto",
-        description = "Guarda un nuevo producto con los datos enviados"
-    )
-    @ApiResponse(
-        responseCode = "201",
-        description = "Producto creado exitosamente",
-        content = @Content(
-            mediaType = "application/json",
-            examples = @ExampleObject(value = """
-                {
-                  "codigo": "P002",
-                  "nombre": "Naranja",
-                  "descripcion": "Fruta cítrica",
-                  "precio": 1.5,
-                  "categoria": "Frutas",
-                  "activo": true
-                }
-            """)
-        )
-    )
-    @PostMapping
-    public ResponseEntity<Producto> crearProducto(@RequestBody Producto producto) {
-        Producto creado = productoService.guardar(producto);
-        return ResponseEntity.status(201).body(creado);
+
+
+    @Test
+    void testObtenerPorId_existente() {
+        Producto producto = new Producto();
+        producto.setId(1L);
+        when(productoService.obtenerPorId(1L)).thenReturn(Optional.of(producto));
+
+        ResponseEntity<Producto> respuesta = productoController.obtenerPorId(1L);
+        assertEquals(HttpStatus.OK, respuesta.getStatusCode());
+        assertEquals(1L, respuesta.getBody().getId());
     }
-    @Operation(
-        summary = "Actualizar un producto",
-        description = "Modifica los datos de un producto existente dado su ID"
-    )
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Producto actualizado exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Producto no encontrado")
-    })
-    @PutMapping("/{id}")
-    public ResponseEntity<Producto> actualizar(@PathVariable Long id, @RequestBody Producto producto) {
-        return productoService.actualizar(id, producto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @Test
+    void testObtenerPorId_noExistente() {
+        when(productoService.obtenerPorId(1L)).thenReturn(Optional.empty());
+
+        ResponseEntity<Producto> respuesta = productoController.obtenerPorId(1L);
+        assertEquals(HttpStatus.OK, respuesta.getStatusCode());
     }
-    @Operation(
-        summary = "Eliminar un producto",
-        description = "Elimina un producto existente por su ID"
-    )
-    @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "Producto eliminado correctamente"),
-        @ApiResponse(responseCode = "404", description = "Producto no encontrado")
-    })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (productoService.eliminar(id)) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @Test
+    void testCrearProducto() {
+        Producto producto = new Producto();
+        producto.setCodigo("P001");
+        producto.setNombre("Producto Test");
+        producto.setDescripcion("Descripción");
+        producto.setPrecio(BigDecimal.valueOf(10));
+        producto.setCategoria("Prueba");
+        producto.setActivo(true);
+
+        when(productoService.guardar(any(Producto.class))).thenReturn(producto);
+
+        ResponseEntity<Producto> respuesta = productoController.crearProducto(producto);
+        assertEquals(HttpStatus.CREATED, respuesta.getStatusCode());;
+        assertEquals("P001", respuesta.getBody().getCodigo());
+    }
+
+    @Test
+    void testActualizar_existente() {
+        Producto producto = new Producto();
+        producto.setNombre("Actualizado");
+        when(productoService.actualizar(eq(1L), any(Producto.class))).thenReturn(Optional.of(producto));
+
+        ResponseEntity<Producto> respuesta = productoController.actualizar(1L, producto);
+        assertEquals(HttpStatus.OK, respuesta.getStatusCode());
+        assertEquals("Actualizado", respuesta.getBody().getNombre());
+    }
+    @Test
+    void testActualizar_noExistente() {
+        Producto producto = new Producto();
+        when(productoService.actualizar(eq(1L), any(Producto.class))).thenReturn(Optional.empty());
+
+        ResponseEntity<Producto> respuesta = productoController.actualizar(1L, producto);
+        assertEquals(HttpStatus.NOT_FOUND, respuesta.getStatusCode());
+    }
+    @Test
+    void testEliminar_existente() {
+        when(productoService.eliminar(1L)).thenReturn(true);
+
+        ResponseEntity<Void> respuesta = productoController.eliminar(1L);
+        assertEquals(HttpStatus.NO_CONTENT, respuesta.getStatusCode());
+    }
+   @Test
+    void testEliminar_noExistente() {
+        when(productoService.eliminar(1L)).thenReturn(false);
+
+        ResponseEntity<Void> respuesta = productoController.eliminar(1L);
+        assertEquals(HttpStatus.NOT_FOUND, respuesta.getStatusCode());
     }
 }
