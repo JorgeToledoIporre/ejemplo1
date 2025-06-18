@@ -38,7 +38,7 @@ public class ProductoServiceTest {
     @Mock
     private ProductoRepository productoRepository;
     private ProductoService productoService;
-
+    
     @BeforeEach
     //clase de pruebas para preparar el entorno 
     void setUp (){
@@ -53,7 +53,7 @@ public class ProductoServiceTest {
         when(productoRepository.findAll()).thenReturn(lista);
 
         List<Producto> resultado = productoService.listarTodos();
-        assertEquals(2, resultado);
+        assertEquals(2, resultado.size());
         verify(productoRepository,times(1)).findAll();
     }
     @Test

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -61,7 +61,7 @@ public class ProductoControllerTest {
         when(productoService.obtenerPorId(1L)).thenReturn(Optional.empty());
 
         ResponseEntity<Producto> respuesta = productoController.obtenerPorId(1L);
-        assertEquals(HttpStatus.OK, respuesta.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, respuesta.getStatusCode());
     }
     @Test
     void testCrearProducto() {

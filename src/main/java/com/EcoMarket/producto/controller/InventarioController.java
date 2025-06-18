@@ -22,6 +22,7 @@ public class InventarioController {
 
     @Autowired
     private InventarioService inventarioService;
+    
     @Operation(
         summary = "Listar todo el inventario",
         description = "Devuelve todos los registros de inventario"
