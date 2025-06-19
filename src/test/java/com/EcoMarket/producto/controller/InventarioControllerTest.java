@@ -1,6 +1,6 @@
-package com.EcoMarket.Project.controller;
+package com.EcoMarket.producto.controller;
 
-import com.EcoMarket.producto.controller.InventarioController;
+
 import com.EcoMarket.producto.model.Inventario;
 import com.EcoMarket.producto.model.Producto;
 import com.EcoMarket.producto.service.InventarioService;

@@ -1,10 +1,10 @@
-package com.EcoMarket.Project.service;
+package com.EcoMarket.producto.service;
 
 import com.EcoMarket.producto.model.Inventario;
 import com.EcoMarket.producto.model.Producto;
 import com.EcoMarket.producto.repository.InventarioRepository;
 import com.EcoMarket.producto.repository.ProductoRepository;
-import com.EcoMarket.producto.service.InventarioService;
+
 
 import jakarta.transaction.Transactional;
 
