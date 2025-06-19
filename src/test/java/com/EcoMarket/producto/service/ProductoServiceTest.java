@@ -1,8 +1,8 @@
-package com.EcoMarket.Project.service;
+package com.EcoMarket.producto.service;
 
 import com.EcoMarket.producto.model.Producto;
 import com.EcoMarket.producto.repository.ProductoRepository;
-import com.EcoMarket.producto.service.ProductoService;
+
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
