@@ -54,6 +54,6 @@ public class DataLoader implements CommandLineRunner {
             inventarioRepo.save(inv);
         }
 
-        System.out.println("🐞 Datos de prueba cargados (perfil dev)");
+        System.out.println("Datos de prueba cargados (perfil dev)");
     }
 }
