@@ -108,7 +108,7 @@ public class InventarioControllerV2 {
     .orElseGet(() -> ResponseEntity.notFound().build());
     }
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<EntityModel<Inventario>> crearUsuario(@RequestBody Inventario inventario){
+    public ResponseEntity<EntityModel<Inventario>> crearInventario(@RequestBody Inventario inventario){
         Inventario nuevoInventario = inventarioService.guardar(inventario);
         return ResponseEntity
         .created(linkTo(methodOn(InventarioControllerV2.class).obtenerPorId(nuevoInventario.getId())).toUri())
@@ -129,8 +129,8 @@ public class InventarioControllerV2 {
             Inventario inventario2 = actualizado.get();
             EntityModel<Inventario> resource = EntityModel.of(inventario2,
             linkTo(methodOn(InventarioControllerV2.class).actualizar(id, inventario)).withSelfRel(),
-                linkTo(methodOn(InventarioControllerV2.class).obtenerPorId(id)).withRel("mensaje"),
-                linkTo(methodOn(InventarioControllerV2.class).Listar()).withRel("mensajes"),
+                linkTo(methodOn(InventarioControllerV2.class).obtenerPorId(id)).withRel("inventario"),
+                linkTo(methodOn(InventarioControllerV2.class).Listar()).withRel("inventarios"),
                 linkTo(methodOn(InventarioControllerV2.class).eliminar(id)).withRel("eliminar"));
             return ResponseEntity.ok(resource);
         }
@@ -145,7 +145,7 @@ public class InventarioControllerV2 {
         @ApiResponse(responseCode = "404", description = "Inventario no encontrado")
     })
     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<?> eliminar(@PathVariable Long id){
+    public ResponseEntity<String> eliminar(@PathVariable Long id){
         boolean eliminado = inventarioService.eliminar(id);
         if (eliminado) {
                 return ResponseEntity

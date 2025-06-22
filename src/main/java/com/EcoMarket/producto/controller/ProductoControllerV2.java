@@ -88,10 +88,10 @@ public class ProductoControllerV2 {
         @ApiResponse(responseCode = "404", description = "Producto no encontrado")
     })
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<Producto> obtenerPorId(@PathVariable Long id) {
-        return productoService.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<EntityModel<Producto>> obtenerPorId(@PathVariable Long id) {
+    return productoService.obtenerPorId(id)
+        .map(producto -> ResponseEntity.ok(assembler.toModel(producto)))
+        .orElse(ResponseEntity.notFound().build());
     }
     @Operation(
         summary = "Crear un nuevo producto",
@@ -155,8 +155,7 @@ public class ProductoControllerV2 {
     public ResponseEntity<?> eliminar(@PathVariable Long id){
         boolean eliminado = productoService.eliminar(id);
         if (eliminado) {
-                return ResponseEntity
-                .ok("Producto eliminado correctamente");
+                return ResponseEntity.noContent().build();
         } else{
             return ResponseEntity
             .status(404).body("Producto no fue eliminado");
