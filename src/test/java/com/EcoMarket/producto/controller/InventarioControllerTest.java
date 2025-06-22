@@ -1,6 +1,5 @@
 package com.EcoMarket.producto.controller;
 
-
 import com.EcoMarket.producto.model.Inventario;
 import com.EcoMarket.producto.model.Producto;
 import com.EcoMarket.producto.service.InventarioService;
@@ -34,7 +33,7 @@ public class InventarioControllerTest {
     void setUp() {
         inventarioService = mock(InventarioService.class);
         inventarioController = new InventarioController();
-        inventarioController.setInventarioService(inventarioService); // Debes crear este setter en la clase real
+        inventarioController.setInventarioService(inventarioService);
     }
     @Test
     void testListarTodos() {

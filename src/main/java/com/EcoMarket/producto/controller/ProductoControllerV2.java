@@ -161,4 +161,8 @@ public class ProductoControllerV2 {
             .status(404).body("Producto no fue eliminado");
         }
     }
+    public void setProductoService(ProductoService productoService2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setProductoService'");
+    }
 }

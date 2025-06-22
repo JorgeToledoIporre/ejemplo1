@@ -1,6 +1,5 @@
 package com.EcoMarket.producto.controller;
 
-
 import com.EcoMarket.producto.model.Producto;
 import com.EcoMarket.producto.service.ProductoService;
 
@@ -26,8 +25,8 @@ public class ProductoControllerTest {
     @Mock
     private ProductoService productoService;
     private ProductoController productoController;
-    @BeforeEach
 
+    @BeforeEach
     void setUp() {
         productoService = mock(ProductoService.class);
         productoController = new ProductoController();
