@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Random;
+import java.util.UUID;
 
 @Profile("dev")
 @Component
@@ -32,7 +33,7 @@ public class DataLoader implements CommandLineRunner {
         // Generar productos
         for (int i = 0; i < 10; i++) {
             Producto p = new Producto();
-            p.setCodigo("P" + faker.number().digits(4));
+            p.setCodigo("P" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
             p.setNombre(faker.commerce().productName());
             p.setDescripcion(faker.lorem().sentence());
             p.setPrecio(BigDecimal.valueOf(faker.number().randomDouble(2, 1, 100)));
